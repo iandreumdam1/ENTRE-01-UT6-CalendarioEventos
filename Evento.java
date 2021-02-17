@@ -2,9 +2,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.DayOfWeek;
 
 /**
  * Representa a un evento del calendario
+ * 
+ * Author - Ibai Andreu
  * 
  */
 public class Evento {
@@ -16,6 +19,7 @@ public class Evento {
         .ofPattern("dd/MM/yyyy");
     private static DateTimeFormatter formateadorHora = DateTimeFormatter
         .ofPattern("HH:mm");
+    static final String ESPACIO = " "; 
 
     /**
      * A partir de los argumentos recibidos
@@ -24,6 +28,19 @@ public class Evento {
      */                 
     public Evento(String nombre, String fecha, String horaInicio,
     String horaFin) {
+         String nombreMal = nombre.trim();
+         String nombreBien = "";
+         String[] nombreSeparado = nombreMal.split(ESPACIO);
+         for(int i = 0; i < nombreSeparado.length; i++){
+             String letraMayuscula = nombreSeparado[i].substring(0,1).toUpperCase();
+             String restoLetras = nombreSeparado[i].substring(1);
+             nombreBien += letraMayuscula + restoLetras;
+         }
+        
+         this.nombre = nombreBien.trim();
+         this.fecha = LocalDate.parse(fecha, formateadorFecha);
+         this.horaInicio = LocalTime.parse(horaInicio);
+         this.horaFin = LocalTime.parse(horaFin);
          
     }
 
@@ -90,7 +107,19 @@ public class Evento {
      * que se obtendrá a partir de la fecha del evento
      */
     public int getDia() {
-        return 0;
+        String diaSem = fecha.getDayOfWeek().toString();
+        int diaNum = 0;
+        switch(diaSem){
+            case "Lunes": diaNum = 1;
+            case "Martes": diaNum = 2;
+            case "Miercoles": diaNum = 3;
+            case "Jueves": diaNum = 4;
+            case "Viernes": diaNum = 5;
+            case "Sabado": diaNum = 6;
+            case "Domingo": diaNum = 7;
+            break;
+        }
+        return diaNum;
     }
 
     /**
@@ -98,15 +127,17 @@ public class Evento {
      * que se obtendrá a partir de la fecha del evento
      */
     public Mes getMes() {
-        return null;
+        int mes = fecha.getMonthValue();
+        Mes[] meses = Mes.values();
+        return meses[mes];
     }
 
     /**
      * calcula y devuelve la duración del evento en minutos
      */
     public int getDuracion() {
-        return 0;
-
+        return (horaFin.getHour() * 60 + horaFin.getMinute()) - 
+        (horaInicio.getHour() * 60 + horaInicio.getMinute());
     }
 
     /**
@@ -117,8 +148,10 @@ public class Evento {
      * Pista! usa un objeto LocalDateTime
      */
     public boolean antesDe(Evento otro) {
-        return true;
-
+        LocalDateTime evento1 = LocalDateTime.of(fecha, horaInicio);
+        LocalDateTime evento2 = LocalDateTime.of(otro.getFecha(), otro.getHoraInicio());
+      
+        return evento1.isBefore(evento2);
     }
 
   
