@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.Map;
 
 /**
  * Esta clase modela un sencillo calendario de eventos.
@@ -39,10 +43,10 @@ public class CalendarioEventos {
      * muy bien usar aquí
      */
     public void addEvento(Evento nuevo) {
-        // if(nuevo.getFecha().isEqual(calendario)){
-             // antesDe(calendario.put(nuevo.getMes(), nuevo));
-        // }
-        calendario.put(nuevo.getMes(), addEvento(nuevo));
+         if(!calendario.containsKey(nuevo.getMes())){
+              calendario.put(nuevo.getMes(), new ArrayList<Evento>());
+         }
+         calendario.put(nuevo.getMes(), new ArrayList<Evento>());
       
     }
 
@@ -54,11 +58,17 @@ public class CalendarioEventos {
      * Usar el conjunto de entradas  
      */
     public String toString() {
-        // StringBuilder sb = new StringBuilder();
-         // for(String envento:calendario){
-             // sb.append(evento + ",");
-         // }
-         // return sb.toString();
+         Set<Map.Entry<Mes, ArrayList<Evento>>> palabras = calendario.entrySet();
+         StringBuilder sb = new StringBuilder();
+         for(Map.Entry<Mes, ArrayList<Evento>> palabra:palabras){
+             ArrayList<Evento> valores = palabra.getValue();
+             sb.append(palabra.getKey() + "\n");
+             for(Evento valor:valores){
+                  sb.append(valor + " "); 
+             }
+             sb.append("\n");
+         }
+         return sb.toString();
     }
 
     /**
@@ -66,8 +76,11 @@ public class CalendarioEventos {
      * Si el mes no existe se devuelve 0
      */
     public int totalEventosEnMes(Mes mes) {
-         
-        return 0;
+         if(calendario.containsKey(mes)){
+              ArrayList<Evento> contador = calendario.get(mes);
+              return contador.size();
+         }
+         return 0;
     }
 
     /**
