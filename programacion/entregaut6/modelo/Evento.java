@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.DayOfWeek;
+package programacion.entregaut6.modelo;
 
 /**
  * Representa a un evento del calendario
@@ -33,14 +34,14 @@ public class Evento {
          String[] nombreSeparado = nombreMal.split(ESPACIO);
          for(int i = 0; i < nombreSeparado.length; i++){
              String letraMayuscula = nombreSeparado[i].substring(0,1).toUpperCase();
-             String restoLetras = nombreSeparado[i].substring(1);
-             nombreBien += letraMayuscula + restoLetras;
+             String restoLetras = nombreSeparado[i].substring(1).toLowerCase();
+             nombreBien += letraMayuscula + restoLetras + ESPACIO;
          }
         
          this.nombre = nombreBien.trim();
-         this.fecha = LocalDate.parse(fecha, formateadorFecha);
-         this.horaInicio = LocalTime.parse(horaInicio);
-         this.horaFin = LocalTime.parse(horaFin);
+         this.fecha = LocalDate.parse(fecha.trim(), formateadorFecha);
+         this.horaInicio = LocalTime.parse(horaInicio.trim());
+         this.horaFin = LocalTime.parse(horaFin.trim());
          
     }
 
@@ -129,7 +130,7 @@ public class Evento {
     public Mes getMes() {
         int mes = fecha.getMonthValue();
         Mes[] meses = Mes.values();
-        return meses[mes];
+        return meses[mes - 1];
     }
 
     /**

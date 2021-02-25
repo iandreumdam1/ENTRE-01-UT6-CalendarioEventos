@@ -1,5 +1,8 @@
 import java.util.Scanner;
-
+package programacion.entregaut6.interfaz;
+/**
+ * Author- Ibai Andreu
+ */
 public class IUConsola {
     private static final int MOSTRAR_CALENDARIO = 1;
     private static final int TOTAL_EVENTOS_MES = 2;
